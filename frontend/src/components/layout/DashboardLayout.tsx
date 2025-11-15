@@ -131,7 +131,9 @@ export default function DashboardLayout({
           </button>
           <div className="flex-1 flex items-center justify-between">
             <h2 className="text-h2 text-neutral-900">
-              {navigation.find((item) => item.href === pathname)?.name || 'Dashboard'}
+              {pathname?.startsWith('/dashboard/reader/meters/') && pathname !== '/dashboard/reader/meters'
+                ? 'Submit Meter Reading'
+                : navigation.find((item) => item.href === pathname)?.name || 'Dashboard'}
             </h2>
             {notificationStats && notificationStats.unreadCount > 0 && (
               <Link

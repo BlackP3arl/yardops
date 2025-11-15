@@ -146,7 +146,7 @@ export default function ReaderDashboardPage() {
                       {meter.meterNumber}
                     </h3>
                     <p className="text-caption text-neutral-500">
-                      {meter.location?.name || 'Unknown'} • {meter.meterType} • {meter.frequency}
+                      {meter.location?.name || 'Unknown'} • {meter.meterType?.name || 'Unknown Type'} • {meter.frequency}
                     </p>
                   </div>
                   <Link

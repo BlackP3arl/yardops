@@ -38,7 +38,7 @@ export default function MyMetersPage() {
               {meter.location?.name || 'Unknown Location'}
             </p>
             <p className="text-sm text-gray-500">
-              Type: {meter.meterType} • Frequency: {meter.frequency}
+              Type: {meter.meterType?.name || 'Unknown'} • Frequency: {meter.frequency}
             </p>
             {(meter as any).lastReading && (
               <p className="text-sm text-gray-500 mt-2">

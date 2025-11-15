@@ -425,6 +425,7 @@ export class ReadingService {
       where: { id: meterId },
       include: {
         location: true,
+        meterType: true,
         readings: {
           orderBy: { readingDate: 'desc' },
           include: {
@@ -476,7 +477,12 @@ export class ReadingService {
       meter: {
         id: meter.id,
         meterNumber: meter.meterNumber,
-        meterType: meter.meterType,
+        meterTypeId: meter.meterTypeId,
+        meterType: meter.meterType ? {
+          id: meter.meterType.id,
+          name: meter.meterType.name,
+          description: meter.meterType.description,
+        } : null,
         location: {
           id: meter.location.id,
           name: meter.location.name,
@@ -518,6 +524,13 @@ export class ReadingService {
                 name: true,
               },
             },
+            meterType: {
+              select: {
+                id: true,
+                name: true,
+                description: true,
+              },
+            },
           },
         },
       },
@@ -532,7 +545,12 @@ export class ReadingService {
       meter: {
         id: reading.meter.id,
         meterNumber: reading.meter.meterNumber,
-        meterType: reading.meter.meterType,
+        meterTypeId: reading.meter.meterTypeId,
+        meterType: reading.meter.meterType ? {
+          id: reading.meter.meterType.id,
+          name: reading.meter.meterType.name,
+          description: reading.meter.meterType.description,
+        } : null,
         location: reading.meter.location,
       },
     }));

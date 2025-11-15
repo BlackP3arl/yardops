@@ -86,14 +86,72 @@ export const assignMeterSchema = z.object({
 export const createReadingSchema = z.object({
   meterId: z.string().uuid('Invalid meter ID'),
   value: z.number().positive('Value must be positive'),
-  readingDate: z.string().datetime().optional(),
-  comment: z.string().optional(),
+  readingDate: z.preprocess(
+    (val) => {
+      if (!val || val === '') return undefined;
+      // Handle both ISO strings and datetime-local format
+      if (typeof val === 'string') {
+        try {
+          // If it's datetime-local format (YYYY-MM-DDTHH:mm), convert to ISO
+          if (val.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/)) {
+            const date = new Date(val);
+            if (!isNaN(date.getTime())) {
+              return date.toISOString();
+            }
+          }
+          // If it's already an ISO string, validate it
+          const date = new Date(val);
+          if (!isNaN(date.getTime())) {
+            return date.toISOString();
+          }
+        } catch (e) {
+          // If conversion fails, return undefined
+          return undefined;
+        }
+      }
+      return val;
+    },
+    z.string().datetime().optional()
+  ),
+  comment: z.preprocess(
+    (val) => (val === '' || val === null ? undefined : val),
+    z.string().optional()
+  ),
 });
 
 export const updateReadingSchema = z.object({
   value: z.number().positive('Value must be positive').optional(),
-  readingDate: z.string().datetime().optional(),
-  comment: z.string().optional(),
+  readingDate: z.preprocess(
+    (val) => {
+      if (!val || val === '') return undefined;
+      // Handle both ISO strings and datetime-local format
+      if (typeof val === 'string') {
+        try {
+          // If it's datetime-local format (YYYY-MM-DDTHH:mm), convert to ISO
+          if (val.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/)) {
+            const date = new Date(val);
+            if (!isNaN(date.getTime())) {
+              return date.toISOString();
+            }
+          }
+          // If it's already an ISO string, validate it
+          const date = new Date(val);
+          if (!isNaN(date.getTime())) {
+            return date.toISOString();
+          }
+        } catch (e) {
+          // If conversion fails, return undefined
+          return undefined;
+        }
+      }
+      return val;
+    },
+    z.string().datetime().optional()
+  ),
+  comment: z.preprocess(
+    (val) => (val === '' || val === null ? undefined : val),
+    z.string().optional()
+  ),
 });
 
 // Scheduled reading schema

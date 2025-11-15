@@ -2,7 +2,6 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { meterService } from '@/services/meter.service';
 import { readingService } from '@/services/reading.service';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -52,109 +51,180 @@ export default function SubmitReadingPage() {
   });
 
   const onSubmit = (data: ReadingFormData) => {
-    createMutation.mutate(data);
+    // Convert datetime-local format to ISO string if provided
+    // Ensure value is a number
+    const readingData = {
+      meterId,
+      value: Number(data.value),
+      readingDate: data.readingDate 
+        ? new Date(data.readingDate).toISOString() 
+        : undefined,
+      comment: data.comment || undefined,
+    };
+    createMutation.mutate(readingData);
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-neutral-500">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!meterHistory) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-neutral-500">Meter not found</div>
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">
-        Submit Reading - {meterHistory?.meter.meterNumber}
-      </h1>
-
-      <div className="bg-white shadow rounded-lg p-6">
-        <h2 className="text-lg font-medium text-gray-900 mb-4">
-          Meter Information
-        </h2>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <p className="text-sm text-gray-500">Location</p>
-            <p className="font-medium">{meterHistory?.meter.location.name}</p>
+    <div className="max-w-2xl mx-auto space-y-6 pb-6">
+      {/* Meter Information Block */}
+      <div className="bg-white rounded-xl p-4 md:p-6 border border-gray-200 shadow-sm">
+        <div className="space-y-4">
+          <div className="pb-3 border-b border-gray-200">
+            <p className="text-xs text-gray-500 mb-1">Meter Name</p>
+            <p className="text-lg font-semibold text-gray-900">
+              {meterHistory.meter.meterNumber}
+            </p>
           </div>
-          <div>
-            <p className="text-sm text-gray-500">Type</p>
-            <p className="font-medium">{meterHistory?.meter.meterType}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <p className="text-xs text-gray-500 mb-1">Meter Location</p>
+              <p className="text-sm font-medium text-gray-900">
+                {meterHistory.meter.location.name}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-500 mb-1">Meter Type</p>
+              <p className="text-sm font-medium text-gray-900">
+                {meterHistory.meter.meterType?.name || 'Unknown'}
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
+      {/* Reading Form */}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white shadow rounded-lg p-6"
+        className="bg-white rounded-xl p-4 md:p-6 border border-gray-200 shadow-sm space-y-5"
       >
-        <h2 className="text-lg font-medium text-gray-900 mb-4">
-          Enter Reading
-        </h2>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Value
-            </label>
-            <input
-              {...register('value', { valueAsNumber: true })}
-              type="number"
-              step="0.01"
-              className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
-            />
-            {errors.value && (
-              <p className="text-red-600 text-sm mt-1">{errors.value.message}</p>
-            )}
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Reading Date
-            </label>
-            <input
-              {...register('readingDate')}
-              type="datetime-local"
-              className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Comment (optional)
-            </label>
-            <textarea
-              {...register('comment')}
-              rows={3}
-              className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
-            />
-          </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-900 mb-2">
+            Reading Value <span className="text-red-600">*</span>
+          </label>
+          <input
+            {...register('value', { valueAsNumber: true })}
+            type="number"
+            step="0.01"
+            placeholder="Enter reading value"
+            className="w-full h-11 px-4 rounded-lg border border-gray-300 bg-white text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+          />
+          {errors.value && (
+            <p className="text-red-600 text-xs mt-1">{errors.value.message}</p>
+          )}
         </div>
-        <button
-          type="submit"
-          className="mt-4 px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
-        >
-          Submit Reading
-        </button>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-900 mb-2">
+            Reading Date
+          </label>
+          <input
+            {...register('readingDate')}
+            type="datetime-local"
+            className="w-full h-11 px-4 rounded-lg border border-gray-300 bg-white text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-900 mb-2">
+            Comment <span className="text-gray-500 text-xs font-normal">(optional)</span>
+          </label>
+          <textarea
+            {...register('comment')}
+            rows={3}
+            placeholder="Add any additional notes..."
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all resize-none"
+          />
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3 pt-2">
+          <button
+            type="submit"
+            disabled={createMutation.isPending}
+            className="flex-1 h-11 px-6 rounded-lg bg-primary-500 text-white text-sm font-medium hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {createMutation.isPending ? 'Submitting...' : 'Submit Reading'}
+          </button>
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className="flex-1 sm:flex-initial h-11 px-6 rounded-lg border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all"
+          >
+            Cancel
+          </button>
+        </div>
       </form>
 
+      {/* Previous Readings Section */}
       {meterHistory && meterHistory.readings.length > 0 && (
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-medium text-gray-900 mb-4">
-            Reading History
+        <div className="bg-white rounded-xl p-4 md:p-6 border border-gray-200 shadow-sm">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            Previous Readings
           </h2>
-          <div className="space-y-2">
-            {meterHistory.readings.slice(0, 10).map((reading) => (
+          <div className="space-y-3">
+            {meterHistory.readings.map((reading) => (
               <div
                 key={reading.id}
-                className="flex justify-between items-center p-3 border border-gray-200 rounded"
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                <div>
-                  <p className="font-medium">{reading.value}</p>
-                  <p className="text-sm text-gray-500">
-                    {new Date(reading.readingDate).toLocaleString()}
-                  </p>
+                <div className="flex items-center gap-3 flex-1">
+                  <div className="flex-shrink-0 w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center border border-primary-200">
+                    <span className="text-primary-600 font-semibold text-sm">
+                      {reading.value}
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900">
+                      {new Date(reading.readingDate).toLocaleDateString('en-GB', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                      })}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {new Date(reading.readingDate).toLocaleTimeString('en-GB', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </p>
+                  </div>
                 </div>
                 {reading.comment && (
-                  <p className="text-sm text-gray-500">{reading.comment}</p>
+                  <div className="sm:max-w-xs">
+                    <p className="text-xs text-gray-600 italic break-words">
+                      "{reading.comment}"
+                    </p>
+                  </div>
                 )}
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {meterHistory && meterHistory.readings.length === 0 && (
+        <div className="bg-white rounded-xl p-4 md:p-6 border border-gray-200 shadow-sm">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            Previous Readings
+          </h2>
+          <p className="text-sm text-gray-500 text-center py-4">
+            No previous readings available for this meter.
+          </p>
         </div>
       )}
     </div>

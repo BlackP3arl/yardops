@@ -505,23 +505,47 @@ export class MeterService {
       meterNumber: assignment.meter.meterNumber,
       meterTypeId: assignment.meter.meterTypeId,
       meterType: assignment.meter.meterType ? {
-        ...assignment.meter.meterType,
-        createdAt: assignment.meter.meterType.createdAt.toISOString(),
-        updatedAt: assignment.meter.meterType.updatedAt.toISOString(),
-      } : undefined,
+        id: assignment.meter.meterType.id,
+        name: assignment.meter.meterType.name,
+        description: assignment.meter.meterType.description,
+        createdAt: assignment.meter.meterType.createdAt instanceof Date 
+          ? assignment.meter.meterType.createdAt.toISOString() 
+          : assignment.meter.meterType.createdAt,
+        updatedAt: assignment.meter.meterType.updatedAt instanceof Date 
+          ? assignment.meter.meterType.updatedAt.toISOString() 
+          : assignment.meter.meterType.updatedAt,
+      } : null,
       frequency: assignment.meter.frequency,
       location: {
-        ...assignment.meter.location,
-        createdAt: assignment.meter.location.createdAt.toISOString(),
-        updatedAt: assignment.meter.location.updatedAt.toISOString(),
+        id: assignment.meter.location.id,
+        name: assignment.meter.location.name,
+        description: assignment.meter.location.description,
+        createdAt: assignment.meter.location.createdAt instanceof Date 
+          ? assignment.meter.location.createdAt.toISOString() 
+          : assignment.meter.location.createdAt,
+        updatedAt: assignment.meter.location.updatedAt instanceof Date 
+          ? assignment.meter.location.updatedAt.toISOString() 
+          : assignment.meter.location.updatedAt,
       },
-      assignedAt: assignment.assignedAt.toISOString(),
+      assignedAt: assignment.assignedAt instanceof Date 
+        ? assignment.assignedAt.toISOString() 
+        : assignment.assignedAt,
       lastReading: assignment.meter.readings[0]
         ? {
-            ...assignment.meter.readings[0],
-            readingDate: assignment.meter.readings[0].readingDate.toISOString(),
-            createdAt: assignment.meter.readings[0].createdAt.toISOString(),
-            updatedAt: assignment.meter.readings[0].updatedAt.toISOString(),
+            id: assignment.meter.readings[0].id,
+            meterId: assignment.meter.readings[0].meterId,
+            userId: assignment.meter.readings[0].userId,
+            value: assignment.meter.readings[0].value,
+            readingDate: assignment.meter.readings[0].readingDate instanceof Date 
+              ? assignment.meter.readings[0].readingDate.toISOString() 
+              : assignment.meter.readings[0].readingDate,
+            comment: assignment.meter.readings[0].comment,
+            createdAt: assignment.meter.readings[0].createdAt instanceof Date 
+              ? assignment.meter.readings[0].createdAt.toISOString() 
+              : assignment.meter.readings[0].createdAt,
+            updatedAt: assignment.meter.readings[0].updatedAt instanceof Date 
+              ? assignment.meter.readings[0].updatedAt.toISOString() 
+              : assignment.meter.readings[0].updatedAt,
           }
         : null,
     }));

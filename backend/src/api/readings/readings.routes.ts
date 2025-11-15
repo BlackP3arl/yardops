@@ -166,10 +166,15 @@ router.post(
         success: true,
         data: reading,
       });
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Error creating reading:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create reading';
       res.status(400).json({
         success: false,
-        error: error instanceof Error ? error.message : 'Failed to create reading',
+        error: errorMessage,
+        ...(process.env.NODE_ENV === 'development' && { 
+          details: error?.stack || String(error) 
+        }),
       });
     }
   }
