@@ -27,10 +27,10 @@ export default function DashboardPage() {
   }, [user, isLoading, router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-base-background">
       <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-        <p className="mt-4 text-gray-600">Loading dashboard...</p>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
+        <p className="mt-4 text-body text-neutral-600">Loading dashboard...</p>
       </div>
     </div>
   );

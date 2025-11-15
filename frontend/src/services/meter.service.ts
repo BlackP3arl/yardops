@@ -21,7 +21,7 @@ export const meterService = {
     limit: number = 10,
     filters?: {
       locationId?: string;
-      meterType?: string;
+      meterTypeId?: string;
       frequency?: string;
     }
   ) {
@@ -29,7 +29,7 @@ export const meterService = {
       page: page.toString(),
       limit: limit.toString(),
       ...(filters?.locationId && { locationId: filters.locationId }),
-      ...(filters?.meterType && { meterType: filters.meterType }),
+      ...(filters?.meterTypeId && { meterTypeId: filters.meterTypeId }),
       ...(filters?.frequency && { frequency: filters.frequency }),
     });
     const response = await apiClient.get<

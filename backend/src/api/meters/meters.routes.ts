@@ -8,7 +8,7 @@ import {
   assignMeterSchema,
   createScheduledReadingSchema,
 } from '../../utils/validation';
-import { UserRole, MeterType, ReadingFrequency } from '@prisma/client';
+import { UserRole, ReadingFrequency } from '@prisma/client';
 import { NotificationService } from '../../services/notification.service';
 import { NotificationType } from '@prisma/client';
 
@@ -31,8 +31,8 @@ router.get('/', async (req: Request, res: Response) => {
     if (req.query.locationId) {
       filters.locationId = req.query.locationId as string;
     }
-    if (req.query.meterType) {
-      filters.meterType = req.query.meterType as MeterType;
+    if (req.query.meterTypeId) {
+      filters.meterTypeId = req.query.meterTypeId as string;
     }
     if (req.query.frequency) {
       filters.frequency = req.query.frequency as ReadingFrequency;
@@ -44,10 +44,15 @@ router.get('/', async (req: Request, res: Response) => {
       success: true,
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
+    console.error('Error in GET /api/meters:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch meters';
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to fetch meters',
+      error: errorMessage,
+      ...(process.env.NODE_ENV === 'development' && { 
+        details: error?.stack || String(error) 
+      }),
     });
   }
 });

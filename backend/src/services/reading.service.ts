@@ -56,6 +56,12 @@ export class ReadingService {
                   name: true,
                 },
               },
+              meterType: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
             },
           },
           user: {
@@ -81,7 +87,7 @@ export class ReadingService {
     }
     if (filters?.meterType) {
       filteredReadings = filteredReadings.filter(
-        (reading) => reading.meter.meterType === filters.meterType
+        (reading) => reading.meter.meterType?.name === filters.meterType || reading.meter.meterTypeId === filters.meterType
       );
     }
 
@@ -94,6 +100,7 @@ export class ReadingService {
         meter: {
           id: reading.meter.id,
           meterNumber: reading.meter.meterNumber,
+          meterTypeId: reading.meter.meterTypeId,
           meterType: reading.meter.meterType,
           location: reading.meter.location,
         },

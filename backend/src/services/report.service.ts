@@ -31,6 +31,7 @@ export class ReportService {
         meter: {
           include: {
             location: true,
+            meterType: true,
           },
         },
         user: {
@@ -52,9 +53,10 @@ export class ReportService {
         (reading) => reading.meter.locationId === filters.locationId
       );
     }
-    if (filters.meterType) {
+    if (filters.meterTypeId || filters.meterType) {
+      const meterTypeFilter = filters.meterTypeId || filters.meterType;
       filteredReadings = filteredReadings.filter(
-        (reading) => reading.meter.meterType === filters.meterType
+        (reading) => reading.meter.meterTypeId === meterTypeFilter || reading.meter.meterType?.name === meterTypeFilter
       );
     }
     if (filters.readerId) {
@@ -79,7 +81,7 @@ export class ReportService {
       readings: filteredReadings.map((reading) => ({
         id: reading.id,
         meterNumber: reading.meter.meterNumber,
-        meterType: reading.meter.meterType,
+        meterType: reading.meter.meterType?.name || 'Unknown',
         location: reading.meter.location.name,
         reader: `${reading.user.firstName} ${reading.user.lastName}`,
         value: reading.value,

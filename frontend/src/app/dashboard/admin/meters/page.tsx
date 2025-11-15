@@ -4,15 +4,16 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { meterService } from '@/services/meter.service';
 import { locationService } from '@/services/location.service';
+import { meterTypeService } from '@/services/meter-type.service';
 import { userService } from '@/services/user.service';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { MeterType, ReadingFrequency } from '../../../../../../common/types/meter.types';
+import { ReadingFrequency } from '../../../../../../common/types/meter.types';
 
 const meterSchema = z.object({
   meterNumber: z.string().min(1, 'Meter number is required'),
-  meterType: z.enum(['WATER', 'ELECTRIC']),
+  meterTypeId: z.string().uuid('Please select a meter type'),
   locationId: z.string().uuid('Please select a location'),
   frequency: z.enum(['DAILY', 'WEEKLY', 'MONTHLY', 'AD_HOC']),
 });
@@ -40,6 +41,11 @@ export default function MetersPage() {
     queryFn: () => locationService.getAllLocations(),
   });
 
+  const { data: meterTypes } = useQuery({
+    queryKey: ['meterTypes'],
+    queryFn: () => meterTypeService.getAllMeterTypes(),
+  });
+
   const { data: usersData } = useQuery({
     queryKey: ['users'],
     queryFn: () => userService.getAllUsers(1, 100),
@@ -48,7 +54,7 @@ export default function MetersPage() {
   const createMutation = useMutation({
     mutationFn: (data: MeterFormData) => meterService.createMeter({
       meterNumber: data.meterNumber,
-      meterType: data.meterType as MeterType,
+      meterTypeId: data.meterTypeId,
       locationId: data.locationId,
       frequency: data.frequency as ReadingFrequency,
     }),
@@ -63,7 +69,7 @@ export default function MetersPage() {
     mutationFn: ({ id, data }: { id: string; data: MeterFormData }) =>
       meterService.updateMeter(id, {
         meterNumber: data.meterNumber,
-        meterType: data.meterType as MeterType,
+        meterTypeId: data.meterTypeId,
         locationId: data.locationId,
         frequency: data.frequency as ReadingFrequency,
       }),
@@ -139,7 +145,7 @@ export default function MetersPage() {
     setEditingMeter(meter.id);
     setShowForm(true);
     setValue('meterNumber', meter.meterNumber);
-    setValue('meterType', meter.meterType);
+    setValue('meterTypeId', meter.meterTypeId || meter.meterType?.id);
     setValue('locationId', meter.locationId);
     setValue('frequency', meter.frequency);
   };
@@ -200,15 +206,18 @@ export default function MetersPage() {
                 Meter Type *
               </label>
               <select
-                {...register('meterType')}
+                {...register('meterTypeId')}
                 className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
               >
                 <option value="">Select type</option>
-                <option value="WATER">Water</option>
-                <option value="ELECTRIC">Electric</option>
+                {meterTypes?.map((type) => (
+                  <option key={type.id} value={type.id}>
+                    {type.name}
+                  </option>
+                ))}
               </select>
-              {errors.meterType && (
-                <p className="text-red-600 text-sm mt-1">{errors.meterType.message}</p>
+              {errors.meterTypeId && (
+                <p className="text-red-600 text-sm mt-1">{errors.meterTypeId.message}</p>
               )}
             </div>
             <div>
@@ -346,7 +355,7 @@ export default function MetersPage() {
                     {meter.meterNumber}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {meter.meterType}
+                    {meter.meterType?.name || '-'}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {meter.location?.name || '-'}

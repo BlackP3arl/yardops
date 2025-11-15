@@ -1,0 +1,628 @@
+{
+  "meta": {
+    "name": "Soft Analytics Dashboard",
+    "version": "1.0.0",
+    "description": "High-level design system to replicate a soft, rounded analytics dashboard similar to the provided screenshot.",
+    "tone": "Friendly, modern, clean, approachable and slightly playful.",
+    "brandPersonality": [
+      "Data-driven but non-intimidating",
+      "Human and warm",
+      "Organized and calm",
+      "Retail / e-commerce oriented"
+    ]
+  },
+
+  "foundations": {
+    "layout": {
+      "grid": {
+        "description": "12-column fluid grid with generous gutters, optimized for desktop dashboards.",
+        "columns": 12,
+        "gutter": 24,
+        "maxWidth": 1440,
+        "pagePaddingX": 32,
+        "pagePaddingY": 24
+      },
+      "appShell": {
+        "description": "Persistent left sidebar + fixed top bar + scrollable content area. Everything lives inside a soft rounded container.",
+        "outerBackground": "#F4F6F6",
+        "innerContainer": {
+          "background": "#FFFFFF",
+          "padding": 16,
+          "borderRadius": 28,
+          "shadow": "soft-elevated"
+        }
+      }
+    },
+
+    "spacing": {
+      "description": "Use an 8px base scale and combine with 4px when needed for fine tuning.",
+      "scale": {
+        "xxs": 2,
+        "xs": 4,
+        "sm": 8,
+        "md": 12,
+        "lg": 16,
+        "xl": 24,
+        "xxl": 32,
+        "sectionGap": 40
+      }
+    },
+
+    "radii": {
+      "description": "Very rounded, pill-like shapes. Corners rarely sharp.",
+      "none": 0,
+      "xs": 4,
+      "sm": 8,
+      "md": 12,
+      "lg": 18,
+      "xl": 24,
+      "pill": 999
+    },
+
+    "shadows": {
+      "description": "Soft, diffused shadows to create a gentle depth; no harsh outlines.",
+      "none": "none",
+      "soft": "0 4px 10px rgba(15, 23, 42, 0.06)",
+      "soft-elevated": "0 12px 35px rgba(15, 23, 42, 0.08)",
+      "inner": "inset 0 1px 0 rgba(255, 255, 255, 0.8)"
+    },
+
+    "colors": {
+      "description": "Pastel, warm palette with pink as primary accent, fresh green as secondary, purple for CTA, and light greys for structure.",
+      "base": {
+        "background": "#F4F6F6",
+        "surface": "#FFFFFF",
+        "surfaceMuted": "#F5F5F7",
+        "borderSubtle": "#E3E4EA",
+        "divider": "#ECEDEF"
+      },
+      "primary": {
+        "description": "Pink / rose primary used for key callouts, positive emphasis, and brand identity.",
+        "50": "#FFF5F7",
+        "100": "#FFE2EA",
+        "200": "#FFC3D0",
+        "300": "#FF9DB2",
+        "400": "#F57492",
+        "500": "#E9557B",
+        "600": "#D03369"
+      },
+      "secondary": {
+        "description": "Fresh green used for success states, chart line, and availability.",
+        "50": "#F3FBF7",
+        "100": "#D8F5E5",
+        "200": "#B4ECCF",
+        "300": "#7FDBA9",
+        "400": "#44C179",
+        "500": "#22A45D",
+        "600": "#178048"
+      },
+      "tertiary": {
+        "description": "Purple accent used for premium actions and wallet/primary sections.",
+        "50": "#F6F2FF",
+        "100": "#E6DCFF",
+        "200": "#C9B5FF",
+        "300": "#AA8CFF",
+        "400": "#8B5DFF",
+        "500": "#6F3FFF"
+      },
+      "neutral": {
+        "900": "#1A1A1F",
+        "800": "#26262B",
+        "700": "#3C3C44",
+        "600": "#555560",
+        "500": "#737380",
+        "400": "#9A9AAA",
+        "300": "#C0C0CC",
+        "200": "#E0E0E8",
+        "100": "#F5F5FA"
+      },
+      "status": {
+        "success": "#22A45D",
+        "warning": "#F6A723",
+        "danger": "#E5495E",
+        "info": "#3B82F6"
+      },
+      "tags": {
+        "availableBg": "#E6F8EE",
+        "availableText": "#1B9150",
+        "outOfStockBg": "#FDE7EC",
+        "outOfStockText": "#D13C60"
+      }
+    },
+
+    "typography": {
+      "description": "Use a modern geometric sans serif with clear hierarchy. All text slightly larger than standard application UIs to maintain friendliness and readability.",
+      "fontFamily": "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      "weights": {
+        "regular": 400,
+        "medium": 500,
+        "semibold": 600,
+        "bold": 700
+      },
+      "scale": {
+        "h1": {
+          "fontSize": 26,
+          "lineHeight": 32,
+          "weight": "semibold",
+          "letterSpacing": -0.4
+        },
+        "h2": {
+          "fontSize": 20,
+          "lineHeight": 26,
+          "weight": "semibold",
+          "letterSpacing": -0.2
+        },
+        "h3": {
+          "fontSize": 18,
+          "lineHeight": 24,
+          "weight": "semibold"
+        },
+        "subtitle": {
+          "fontSize": 14,
+          "lineHeight": 20,
+          "weight": "medium"
+        },
+        "body": {
+          "fontSize": 13,
+          "lineHeight": 18,
+          "weight": "regular"
+        },
+        "label": {
+          "fontSize": 12,
+          "lineHeight": 16,
+          "weight": "medium",
+          "transform": "none"
+        },
+        "caption": {
+          "fontSize": 11,
+          "lineHeight": 14,
+          "weight": "regular"
+        },
+        "dataLarge": {
+          "description": "Big KPI numbers inside cards.",
+          "fontSize": 24,
+          "lineHeight": 30,
+          "weight": "bold",
+          "letterSpacing": -0.4
+        }
+      }
+    },
+
+    "icons": {
+      "description": "Rounded line icons with solid fills for key actions. Use minimal strokes and keep them small.",
+      "style": "Rounded, 2px stroke, or small filled icons in pills.",
+      "size": {
+        "sm": 14,
+        "md": 16,
+        "lg": 20
+      }
+    },
+
+    "motion": {
+      "description": "Subtle, almost invisible animations—no bouncy or aggressive motion.",
+      "defaults": {
+        "duration": 200,
+        "easing": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+        "hoverScale": 1.02,
+        "hoverShadow": "soft-elevated"
+      }
+    }
+  },
+
+  "components": {
+    "AppShell": {
+      "description": "Root structure with left sidebar, top bar and main dashboard canvas.",
+      "layout": {
+        "direction": "row",
+        "sidebarWidth": 260,
+        "topBarHeight": 70,
+        "contentPadding": 16
+      },
+      "background": "base.background",
+      "innerContainer": "appShell.innerContainer"
+    },
+
+    "TopBar": {
+      "description": "Floating top bar with search, balance/summary pills, inbox, notifications, and user profile.",
+      "container": {
+        "background": "#FFFFFF",
+        "borderRadius": 999,
+        "paddingY": 10,
+        "paddingX": 18,
+        "shadow": "soft"
+      },
+      "sections": {
+        "left": "searchField",
+        "center": "summaryPills",
+        "right": "icons + avatar"
+      },
+      "summaryPill": {
+        "background": "base.surface",
+        "borderRadius": "pill",
+        "paddingX": 16,
+        "paddingY": 8,
+        "gap": 6,
+        "textStyle": "body",
+        "chipAccent": "primary.500"
+      },
+      "iconButtons": {
+        "shape": "pill",
+        "size": 36,
+        "background": "base.surfaceMuted",
+        "iconColor": "neutral.600",
+        "notificationDot": {
+          "size": 8,
+          "color": "primary.500",
+          "position": "top-right"
+        }
+      },
+      "avatar": {
+        "size": 36,
+        "shape": "circle",
+        "withName": true,
+        "nameStyle": "subtitle"
+      }
+    },
+
+    "Sidebar": {
+      "description": "Left navigation rail with product and report categories, section labels and collapsible sub-menus.",
+      "background": "#FFFFFF",
+      "padding": 20,
+      "borderRadius": 24,
+      "shadow": "soft",
+      "sections": [
+        "BrandLogo",
+        "NavGroups",
+        "BottomActions"
+      ],
+      "brand": {
+        "logoSize": 48,
+        "titleStyle": "h3",
+        "subtitleStyle": "caption"
+      },
+      "navItem": {
+        "height": 32,
+        "paddingX": 12,
+        "gap": 10,
+        "iconSize": 16,
+        "labelStyle": "body",
+        "defaultColor": "neutral.600",
+        "active": {
+          "background": "primary.50",
+          "borderRadius": "pill",
+          "textColor": "primary.500",
+          "iconColor": "primary.500",
+          "indicatorWidth": 4,
+          "indicatorColor": "primary.500"
+        },
+        "hover": {
+          "background": "base.surfaceMuted"
+        }
+      },
+      "navGroup": {
+        "labelStyle": "label",
+        "labelColor": "neutral.500",
+        "spacingTop": 16
+      },
+      "collapseIcon": {
+        "rotationExpanded": 180
+      }
+    },
+
+    "SearchField": {
+      "description": "Primary search field in top bar.",
+      "height": 40,
+      "background": "base.surfaceMuted",
+      "borderRadius": "pill",
+      "paddingX": 16,
+      "icon": {
+        "position": "left",
+        "size": 16,
+        "color": "neutral.400"
+      },
+      "placeholderStyle": {
+        "font": "body",
+        "color": "neutral.400"
+      },
+      "textStyle": "body"
+    },
+
+    "Card": {
+      "description": "Primary content container used across dashboard for KPIs, charts, and widgets.",
+      "background": "base.surface",
+      "borderRadius": 20,
+      "padding": 16,
+      "shadow": "soft",
+      "header": {
+        "layout": "horizontal",
+        "titleStyle": "subtitle",
+        "titleColor": "neutral.800",
+        "metaStyle": "caption",
+        "metaColor": "neutral.500",
+        "spacing": 8
+      },
+      "body": {
+        "paddingTop": 12
+      },
+      "footer": {
+        "paddingTop": 12,
+        "borderTop": "1px solid borderSubtle",
+        "spacing": 8
+      }
+    },
+
+    "KPIStat": {
+      "description": "Top KPI tiles: total revenue, total customers, etc.",
+      "container": {
+        "background": "base.surface",
+        "borderRadius": 18,
+        "padding": 16,
+        "shadow": "soft"
+      },
+      "layout": {
+        "titlePosition": "top-left",
+        "valuePosition": "middle-left",
+        "trendPosition": "bottom-left"
+      },
+      "styles": {
+        "title": {
+          "typography": "caption",
+          "color": "neutral.500"
+        },
+        "value": {
+          "typography": "dataLarge",
+          "color": "neutral.900"
+        },
+        "trend": {
+          "typography": "caption",
+          "colorPositive": "secondary.500",
+          "colorNegative": "danger"
+        }
+      }
+    },
+
+    "Button": {
+      "description": "Rounded pill buttons with solid fills for primary actions and subtle outlines or neutral fills for secondary.",
+      "sizes": {
+        "sm": {
+          "height": 30,
+          "paddingX": 14,
+          "textStyle": "label"
+        },
+        "md": {
+          "height": 36,
+          "paddingX": 20,
+          "textStyle": "label"
+        },
+        "lg": {
+          "height": 44,
+          "paddingX": 24,
+          "textStyle": "subtitle"
+        }
+      },
+      "variants": {
+        "primary": {
+          "background": "primary.500",
+          "color": "#FFFFFF",
+          "radius": "pill",
+          "shadow": "soft",
+          "hoverBackground": "primary.600"
+        },
+        "secondary": {
+          "background": "base.surfaceMuted",
+          "color": "neutral.700",
+          "radius": "pill",
+          "hoverBackground": "base.surface"
+        },
+        "success": {
+          "background": "secondary.500",
+          "color": "#FFFFFF"
+        },
+        "purple": {
+          "description": "Premium/upgrade CTA.",
+          "background": "tertiary.500",
+          "color": "#FFFFFF"
+        },
+        "ghost": {
+          "background": "transparent",
+          "border": "1px solid borderSubtle",
+          "color": "neutral.700"
+        }
+      },
+      "iconPlacement": {
+        "left": true,
+        "right": true,
+        "gap": 6
+      }
+    },
+
+    "Tag": {
+      "description": "Status chips used in tables (Available / Out of stock).",
+      "height": 24,
+      "paddingX": 10,
+      "radius": "pill",
+      "textStyle": "caption",
+      "variants": {
+        "success": {
+          "background": "tags.availableBg",
+          "color": "tags.availableText"
+        },
+        "danger": {
+          "background": "tags.outOfStockBg",
+          "color": "tags.outOfStockText"
+        },
+        "neutral": {
+          "background": "base.surfaceMuted",
+          "color": "neutral.600"
+        }
+      }
+    },
+
+    "Table": {
+      "description": "Product list table with soft rows and subtle separators.",
+      "header": {
+        "background": "base.surfaceMuted",
+        "textStyle": "caption",
+        "textColor": "neutral.500",
+        "uppercase": false,
+        "rowHeight": 32
+      },
+      "row": {
+        "height": 40,
+        "textStyle": "body",
+        "textColor": "neutral.700",
+        "dividerColor": "base.divider",
+        "hoverBackground": "base.surfaceMuted",
+        "selectedBackground": "primary.50"
+      },
+      "cells": {
+        "paddingX": 16,
+        "paddingY": 8,
+        "firstCellAlign": "left",
+        "numericAlign": "right"
+      },
+      "actions": {
+        "iconSize": 14,
+        "gap": 10,
+        "colors": {
+          "edit": "secondary.500",
+          "view": "neutral.500",
+          "delete": "danger"
+        }
+      }
+    },
+
+    "ChartLine": {
+      "description": "Sales over time line chart with two colored lines (pink and green) and highlighted active data point.",
+      "background": "base.surface",
+      "gridLinesColor": "base.divider",
+      "axisLabelStyle": "caption",
+      "lines": {
+        "primary": {
+          "color": "primary.500",
+          "thickness": 2.5,
+          "showDots": true
+        },
+        "secondary": {
+          "color": "secondary.500",
+          "thickness": 2.5,
+          "showDots": true
+        }
+      },
+      "tooltip": {
+        "background": "#FFFFFF",
+        "borderRadius": 12,
+        "shadow": "soft",
+        "textStyle": "caption"
+      },
+      "activePointLabel": {
+        "background": "primary.500",
+        "color": "#FFFFFF",
+        "radius": "pill",
+        "paddingX": 10,
+        "paddingY": 4
+      }
+    },
+
+    "ChartDonut": {
+      "description": "Donut chart used for Monthly Sales.",
+      "ringWidth": 16,
+      "innerRadiusRatio": 0.6,
+      "legendPosition": "bottom",
+      "colors": [
+        "primary.500",
+        "secondary.500",
+        "#F6A723",
+        "#3B82F6"
+      ],
+      "centerLabel": {
+        "titleStyle": "caption",
+        "valueStyle": "dataLarge"
+      }
+    },
+
+    "ChartArea": {
+      "description": "Net spending small widget with soft gradient fill.",
+      "lineColor": "primary.500",
+      "fillGradient": [
+        "rgba(233, 85, 123, 0.4)",
+        "rgba(233, 85, 123, 0.0)"
+      ],
+      "radius": 16
+    },
+
+    "AvatarGroup": {
+      "description": "Overlapping avatars for participants in a card.",
+      "avatarSize": 24,
+      "overlapOffset": -8,
+      "borderColor": "#FFFFFF",
+      "maxVisible": 4
+    },
+
+    "TabsLegend": {
+      "description": "Top-right legend chips for the chart (Average Sale Value, Premium, Expenses).",
+      "item": {
+        "layout": "horizontal",
+        "gap": 6,
+        "dotSize": 8,
+        "dotRadius": 999,
+        "labelStyle": "caption",
+        "labelColor": "neutral.500"
+      },
+      "colors": {
+        "average": "primary.500",
+        "premium": "secondary.500",
+        "expenses": "status.danger"
+      }
+    },
+
+    "InfoWidget": {
+      "description": "Bottom row small cards like Wallet Verification, Expenses, Go Premium.",
+      "layout": {
+        "direction": "column",
+        "gap": 12
+      },
+      "headerIcon": {
+        "background": "base.surfaceMuted",
+        "size": 32,
+        "radius": "pill"
+      },
+      "titleStyle": "subtitle",
+      "bodyStyle": "caption",
+      "cta": "Button.primary or Button.purple"
+    }
+  },
+
+  "principles": {
+    "visualHierarchy": [
+      "Let primary data (KPI numbers, charts) be the darkest elements on screen.",
+      "Use color accents only for actions, states, and chart data—not for decoration.",
+      "Reserve strong pink (#E9557B range) for CTAs, key stats and active states."
+    ],
+    "densityAndWhitespace": [
+      "Cards are compact but never crowded; maintain at least 12–16px inner padding.",
+      "Sections should have clear vertical separation (24–32px) to avoid merging.",
+      "Use whitespace to group related elements instead of heavy borders."
+    ],
+    "consistency": [
+      "Use pills for any interactive element (buttons, nav, tags, filters).",
+      "Apply the same border radius tier within a context (e.g., all dashboard cards use 20px).",
+      "Maintain consistent icon sizes and spacing across the UI."
+    ],
+    "accessibility": [
+      "Ensure text on colored backgrounds has sufficient contrast (WCAG AA where possible).",
+      "Use shape + color for status (e.g., pill tags with color and label text).",
+      "Keep font sizes 12px and above for any interactive or critical text."
+    ],
+    "interaction": [
+      "All interactive surfaces should show a hover state via subtle shadow and slight elevation / lightening.",
+      "Click targets should be at least 32px high.",
+      "Avoid abrupt animations; use small positional or shadow changes for feedback."
+    ],
+    "brandFeel": [
+      "Always prefer soft, friendly shapes over sharp edges.",
+      "Avoid heavy outlines—depth comes from shadow and layering.",
+      "Colors must feel pastel and calm rather than saturated and neon."
+    ]
+  }
+}

@@ -43,6 +43,7 @@ export default function DashboardLayout({
           { name: 'Dashboard', href: '/dashboard/admin', icon: '📊' },
           { name: 'Users', href: '/dashboard/admin/users', icon: '👥' },
           { name: 'Locations', href: '/dashboard/admin/locations', icon: '📍' },
+          { name: 'Meter Types', href: '/dashboard/admin/meter-types', icon: '⚡' },
           { name: 'Meters', href: '/dashboard/admin/meters', icon: '🔢' },
           { name: 'Readings', href: '/dashboard/admin/readings', icon: '📖' },
           { name: 'Reports', href: '/dashboard/admin/reports', icon: '📈' },
@@ -55,54 +56,62 @@ export default function DashboardLayout({
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-base-background flex">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform ${
+        className={`fixed inset-y-0 left-0 z-50 w-[260px] bg-base-surface rounded-xl shadow-soft transform ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } transition-transform duration-300 ease-in-out lg:translate-x-0 lg:relative lg:z-auto`}
+        } transition-transform duration-300 ease-in-out lg:translate-x-0 lg:relative lg:z-auto lg:rounded-none lg:shadow-none m-4 lg:m-0`}
       >
-        <div className="flex flex-col h-full">
-          <div className="flex items-center justify-between h-16 px-4 border-b">
-            <h1 className="text-xl font-bold text-primary-600">YardOps</h1>
+        <div className="flex flex-col h-full p-5">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center text-2xl">
+                📊
+              </div>
+              <div>
+                <h3 className="text-h3 text-neutral-900">YardOps</h3>
+                <p className="text-caption text-neutral-500">Dashboard</p>
+              </div>
+            </div>
             <button
               onClick={() => setSidebarOpen(false)}
-              className="lg:hidden text-gray-500 hover:text-gray-700"
+              className="lg:hidden text-neutral-600 hover:text-neutral-900 transition-colors"
             >
               ✕
             </button>
           </div>
-          <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+          <nav className="flex-1 space-y-1 overflow-y-auto">
             {navigation.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center px-4 py-2 text-sm font-medium rounded-md ${
+                  className={`w-full h-8 px-3 rounded-full flex items-center gap-2.5 text-body transition-colors ${
                     isActive
-                      ? 'bg-primary-100 text-primary-700'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      ? 'bg-primary-50 text-primary-500'
+                      : 'text-neutral-600 hover:bg-base-surfaceMuted'
                   }`}
                 >
-                  <span className="mr-3">{item.icon}</span>
-                  {item.name}
+                  <span className="text-base">{item.icon}</span>
+                  <span>{item.name}</span>
                 </Link>
               );
             })}
           </nav>
-          <div className="p-4 border-t">
-            <div className="flex items-center justify-between mb-2">
-              <div>
-                <p className="text-sm font-medium text-gray-900">
+          <div className="mt-auto pt-4 border-t border-base-divider">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex-1">
+                <p className="text-subtitle text-neutral-900">
                   {user?.firstName} {user?.lastName}
                 </p>
-                <p className="text-xs text-gray-500">{user?.email}</p>
+                <p className="text-caption text-neutral-500">{user?.email}</p>
               </div>
             </div>
             <button
               onClick={handleLogout}
-              className="w-full px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700"
+              className="w-full h-9 px-5 rounded-full text-label font-medium bg-status-danger text-white hover:opacity-90 transition-colors"
             >
               Logout
             </button>
@@ -113,25 +122,25 @@ export default function DashboardLayout({
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top bar */}
-        <div className="sticky top-0 z-40 flex h-16 bg-white shadow-sm">
+        <div className="sticky top-0 z-40 flex h-16 bg-base-surface rounded-full shadow-soft mx-4 mt-4 mb-4 px-[18px] items-center">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="px-4 text-gray-500 lg:hidden"
+            className="lg:hidden text-neutral-600 hover:text-neutral-900 transition-colors mr-2"
           >
             ☰
           </button>
-          <div className="flex-1 flex items-center justify-between px-4">
-            <h2 className="text-lg font-semibold text-gray-900">
+          <div className="flex-1 flex items-center justify-between">
+            <h2 className="text-h2 text-neutral-900">
               {navigation.find((item) => item.href === pathname)?.name || 'Dashboard'}
             </h2>
             {notificationStats && notificationStats.unreadCount > 0 && (
               <Link
                 href="/dashboard/notifications"
-                className="relative p-2 text-gray-500 hover:text-gray-700"
+                className="relative w-9 h-9 rounded-full bg-base-surfaceMuted flex items-center justify-center text-neutral-600 hover:bg-base-surface transition-colors"
               >
-                🔔
-                <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500"></span>
-                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                <span className="text-base">🔔</span>
+                <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-primary-500"></span>
+                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary-500 text-caption text-white">
                   {notificationStats.unreadCount}
                 </span>
               </Link>
@@ -140,7 +149,7 @@ export default function DashboardLayout({
         </div>
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto p-6">{children}</main>
+        <main className="flex-1 overflow-y-auto px-6 pb-6">{children}</main>
       </div>
 
       {/* Overlay for mobile */}

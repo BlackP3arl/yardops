@@ -12,6 +12,7 @@ import { logger } from './utils/logger';
 import authRoutes from './api/auth/auth.routes';
 import userRoutes from './api/users/users.routes';
 import locationRoutes from './api/locations/locations.routes';
+import meterTypeRoutes from './api/meter-types/meter-types.routes';
 import meterRoutes from './api/meters/meters.routes';
 import readingRoutes from './api/readings/readings.routes';
 import notificationRoutes from './api/notifications/notifications.routes';
@@ -98,6 +99,7 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/locations', locationRoutes);
+app.use('/api/meter-types', meterTypeRoutes);
 app.use('/api/meters', meterRoutes);
 app.use('/api/readings', readingRoutes);
 app.use('/api/notifications', notificationRoutes);

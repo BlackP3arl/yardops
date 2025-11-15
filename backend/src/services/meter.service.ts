@@ -1,6 +1,6 @@
 import { prisma } from '../config/database';
 import { logger } from '../utils/logger';
-import { MeterType, ReadingFrequency } from '@prisma/client';
+import { ReadingFrequency } from '@prisma/client';
 import {
   CreateMeterRequest,
   UpdateMeterRequest,
@@ -21,7 +21,7 @@ export class MeterService {
     limit: number = 10,
     filters?: {
       locationId?: string;
-      meterType?: MeterType;
+      meterTypeId?: string;
       frequency?: ReadingFrequency;
     }
   ) {
@@ -31,64 +31,105 @@ export class MeterService {
     if (filters?.locationId) {
       where.locationId = filters.locationId;
     }
-    if (filters?.meterType) {
-      where.meterType = filters.meterType;
+    if (filters?.meterTypeId) {
+      where.meterTypeId = filters.meterTypeId;
     }
     if (filters?.frequency) {
       where.frequency = filters.frequency;
     }
 
-    const [meters, total] = await Promise.all([
-      prisma.meter.findMany({
-        where,
-        skip,
-        take: limit,
-        include: {
-          location: {
-            select: {
-              id: true,
-              name: true,
-              description: true,
+    try {
+      const [meters, total] = await Promise.all([
+        prisma.meter.findMany({
+          where,
+          skip,
+          take: limit,
+          include: {
+            location: {
+              select: {
+                id: true,
+                name: true,
+                description: true,
+              },
             },
-          },
-          assignments: {
-            include: {
-              user: {
-                select: {
-                  id: true,
-                  firstName: true,
-                  lastName: true,
-                  email: true,
+            meterType: {
+              select: {
+                id: true,
+                name: true,
+                description: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+            assignments: {
+              include: {
+                user: {
+                  select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                    email: true,
+                  },
                 },
               },
             },
           },
-        },
-        orderBy: { meterNumber: 'asc' },
-      }),
-      prisma.meter.count({ where }),
-    ]);
+          orderBy: { meterNumber: 'asc' },
+        }),
+        prisma.meter.count({ where }),
+      ]);
 
-    return {
-      data: meters.map((meter) => ({
-        ...meter,
-        createdAt: meter.createdAt.toISOString(),
-        updatedAt: meter.updatedAt.toISOString(),
-        location: {
-          ...meter.location,
-        },
-        assignments: meter.assignments.map((assignment) => ({
-          id: assignment.id,
-          userId: assignment.userId,
-          assignedAt: assignment.assignedAt.toISOString(),
-          user: assignment.user,
+      return {
+        data: meters.map((meter) => ({
+          id: meter.id,
+          meterNumber: meter.meterNumber,
+          meterTypeId: meter.meterTypeId,
+          locationId: meter.locationId,
+          frequency: meter.frequency,
+          createdAt: meter.createdAt instanceof Date 
+            ? meter.createdAt.toISOString() 
+            : meter.createdAt,
+          updatedAt: meter.updatedAt instanceof Date 
+            ? meter.updatedAt.toISOString() 
+            : meter.updatedAt,
+          location: meter.location ? {
+            id: meter.location.id,
+            name: meter.location.name,
+            description: meter.location.description,
+          } : null,
+          meterType: meter.meterType ? {
+            id: meter.meterType.id,
+            name: meter.meterType.name,
+            description: meter.meterType.description,
+            createdAt: meter.meterType.createdAt instanceof Date 
+              ? meter.meterType.createdAt.toISOString() 
+              : meter.meterType.createdAt,
+            updatedAt: meter.meterType.updatedAt instanceof Date 
+              ? meter.meterType.updatedAt.toISOString() 
+              : meter.meterType.updatedAt,
+          } : null,
+          assignments: meter.assignments ? meter.assignments.map((assignment) => ({
+            id: assignment.id,
+            userId: assignment.userId,
+            assignedAt: assignment.assignedAt instanceof Date 
+              ? assignment.assignedAt.toISOString() 
+              : assignment.assignedAt,
+            user: assignment.user,
+          })) : [],
         })),
-      })),
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
-    };
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      };
+    } catch (error: any) {
+      logger.error({ 
+        error: error?.message || error, 
+        stack: error?.stack,
+        filters 
+      }, 'Failed to fetch meters');
+      throw new Error(error?.message || 'Failed to fetch meters');
+    }
   }
 
   /**
@@ -99,6 +140,7 @@ export class MeterService {
       where: { id },
       include: {
         location: true,
+        meterType: true,
         assignments: {
           include: {
             user: {
@@ -140,6 +182,11 @@ export class MeterService {
         createdAt: meter.location.createdAt.toISOString(),
         updatedAt: meter.location.updatedAt.toISOString(),
       },
+      meterType: meter.meterType ? {
+        ...meter.meterType,
+        createdAt: meter.meterType.createdAt.toISOString(),
+        updatedAt: meter.meterType.updatedAt.toISOString(),
+      } : undefined,
       assignments: meter.assignments.map((assignment) => ({
         id: assignment.id,
         userId: assignment.userId,
@@ -178,15 +225,25 @@ export class MeterService {
       throw new Error('Location not found');
     }
 
+    // Verify meter type exists
+    const meterType = await prisma.meterType.findUnique({
+      where: { id: data.meterTypeId },
+    });
+
+    if (!meterType) {
+      throw new Error('Meter type not found');
+    }
+
     const meter = await prisma.meter.create({
       data: {
         meterNumber: data.meterNumber,
-        meterType: data.meterType,
+        meterTypeId: data.meterTypeId,
         locationId: data.locationId,
         frequency: data.frequency,
       },
       include: {
         location: true,
+        meterType: true,
       },
     });
 
@@ -201,6 +258,11 @@ export class MeterService {
         createdAt: meter.location.createdAt.toISOString(),
         updatedAt: meter.location.updatedAt.toISOString(),
       },
+      meterType: meter.meterType ? {
+        ...meter.meterType,
+        createdAt: meter.meterType.createdAt.toISOString(),
+        updatedAt: meter.meterType.updatedAt.toISOString(),
+      } : undefined,
     };
   }
 
@@ -238,16 +300,28 @@ export class MeterService {
       }
     }
 
+    // Verify meter type exists if being updated
+    if (data.meterTypeId && data.meterTypeId !== meter.meterTypeId) {
+      const meterType = await prisma.meterType.findUnique({
+        where: { id: data.meterTypeId },
+      });
+
+      if (!meterType) {
+        throw new Error('Meter type not found');
+      }
+    }
+
     const updatedMeter = await prisma.meter.update({
       where: { id },
       data: {
         ...(data.meterNumber && { meterNumber: data.meterNumber }),
-        ...(data.meterType && { meterType: data.meterType }),
+        ...(data.meterTypeId && { meterTypeId: data.meterTypeId }),
         ...(data.locationId && { locationId: data.locationId }),
         ...(data.frequency && { frequency: data.frequency }),
       },
       include: {
         location: true,
+        meterType: true,
       },
     });
 
@@ -262,6 +336,11 @@ export class MeterService {
         createdAt: updatedMeter.location.createdAt.toISOString(),
         updatedAt: updatedMeter.location.updatedAt.toISOString(),
       },
+      meterType: updatedMeter.meterType ? {
+        ...updatedMeter.meterType,
+        createdAt: updatedMeter.meterType.createdAt.toISOString(),
+        updatedAt: updatedMeter.meterType.updatedAt.toISOString(),
+      } : undefined,
     };
   }
 
@@ -411,6 +490,7 @@ export class MeterService {
         meter: {
           include: {
             location: true,
+            meterType: true,
             readings: {
               take: 1,
               orderBy: { readingDate: 'desc' },
@@ -423,7 +503,12 @@ export class MeterService {
     return assignments.map((assignment) => ({
       id: assignment.meter.id,
       meterNumber: assignment.meter.meterNumber,
-      meterType: assignment.meter.meterType,
+      meterTypeId: assignment.meter.meterTypeId,
+      meterType: assignment.meter.meterType ? {
+        ...assignment.meter.meterType,
+        createdAt: assignment.meter.meterType.createdAt.toISOString(),
+        updatedAt: assignment.meter.meterType.updatedAt.toISOString(),
+      } : undefined,
       frequency: assignment.meter.frequency,
       location: {
         ...assignment.meter.location,

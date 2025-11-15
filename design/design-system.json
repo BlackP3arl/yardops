@@ -1,0 +1,716 @@
+{
+  "meta": {
+    "name": "Creator Analytics Design System",
+    "version": "1.0.0",
+    "description": "Comprehensive design system for the Creator Analytics application. This document provides exact styling specifications, component patterns, and design guidelines for building consistent features.",
+    "target": "creator-analytics",
+    "framework": "Next.js + React + Tailwind CSS",
+    "tone": "Friendly, modern, clean, approachable, and slightly playful",
+    "brandPersonality": [
+      "Data-driven but non-intimidating",
+      "Human and warm",
+      "Organized and calm",
+      "Creator-focused and empowering"
+    ]
+  },
+
+  "foundations": {
+    "colors": {
+      "description": "Color palette with semantic naming. Use Tailwind classes like 'bg-primary-500', 'text-neutral-700', etc.",
+      "primary": {
+        "description": "Pink/rose primary used for key callouts, positive emphasis, active states, and brand identity",
+        "50": { "hex": "#FFF5F7", "tailwind": "primary-50", "usage": "Active nav item backgrounds, subtle highlights" },
+        "100": { "hex": "#FFE2EA", "tailwind": "primary-100", "usage": "Icon backgrounds, avatar backgrounds" },
+        "200": { "hex": "#FFC3D0", "tailwind": "primary-200", "usage": "Focus rings, hover states" },
+        "300": { "hex": "#FF9DB2", "tailwind": "primary-300", "usage": "Disabled states" },
+        "400": { "hex": "#F57492", "tailwind": "primary-400", "usage": "Hover states for primary buttons" },
+        "500": { "hex": "#E9557B", "tailwind": "primary-500", "usage": "Primary buttons, active text, chart lines, notification dots" },
+        "600": { "hex": "#D03369", "tailwind": "primary-600", "usage": "Button hover states, pressed states" }
+      },
+      "secondary": {
+        "description": "Fresh green used for success states, positive trends, chart lines, and availability",
+        "50": { "hex": "#F3FBF7", "tailwind": "secondary-50", "usage": "Success backgrounds" },
+        "100": { "hex": "#D8F5E5", "tailwind": "secondary-100", "usage": "Light success backgrounds" },
+        "200": { "hex": "#B4ECCF", "tailwind": "secondary-200", "usage": "Hover states" },
+        "300": { "hex": "#7FDBA9", "tailwind": "secondary-300", "usage": "Medium success states" },
+        "400": { "hex": "#44C179", "tailwind": "secondary-400", "usage": "Success hover" },
+        "500": { "hex": "#22A45D", "tailwind": "secondary-500", "usage": "Success text, positive trends, chart lines, status indicators" },
+        "600": { "hex": "#178048", "tailwind": "secondary-600", "usage": "Dark success states" }
+      },
+      "tertiary": {
+        "description": "Purple accent used for premium actions, upgrade CTAs, and special features",
+        "50": { "hex": "#F6F2FF", "tailwind": "tertiary-50", "usage": "Purple backgrounds" },
+        "100": { "hex": "#E6DCFF", "tailwind": "tertiary-100", "usage": "Light purple backgrounds" },
+        "200": { "hex": "#C9B5FF", "tailwind": "tertiary-200", "usage": "Hover states" },
+        "300": { "hex": "#AA8CFF", "tailwind": "tertiary-300", "usage": "Medium purple" },
+        "400": { "hex": "#8B5DFF", "tailwind": "tertiary-400", "usage": "Purple hover" },
+        "500": { "hex": "#6F3FFF", "tailwind": "tertiary-500", "usage": "Premium buttons, upgrade CTAs" }
+      },
+      "neutral": {
+        "description": "Grayscale palette for text, borders, and backgrounds",
+        "900": { "hex": "#1A1A1F", "tailwind": "neutral-900", "usage": "Primary text, headings, KPI values" },
+        "800": { "hex": "#26262B", "tailwind": "neutral-800", "usage": "Card titles, section headers" },
+        "700": { "hex": "#3C3C44", "tailwind": "neutral-700", "usage": "Body text, table content" },
+        "600": { "hex": "#555560", "tailwind": "neutral-600", "usage": "Secondary text, nav items, icons" },
+        "500": { "hex": "#737380", "tailwind": "neutral-500", "usage": "Meta text, captions, labels" },
+        "400": { "hex": "#9A9AAA", "tailwind": "neutral-400", "usage": "Placeholders, disabled text, chart axes" },
+        "300": { "hex": "#C0C0CC", "tailwind": "neutral-300", "usage": "Borders, dividers" },
+        "200": { "hex": "#E0E0E8", "tailwind": "neutral-200", "usage": "Light borders" },
+        "100": { "hex": "#F5F5FA", "tailwind": "neutral-100", "usage": "Very light backgrounds" }
+      },
+      "base": {
+        "description": "Base colors for app structure and surfaces",
+        "background": { "hex": "#F4F6F6", "tailwind": "base-background", "usage": "Page background, outer container" },
+        "surface": { "hex": "#FFFFFF", "tailwind": "base-surface", "usage": "Cards, panels, main surfaces" },
+        "surfaceMuted": { "hex": "#F5F5F7", "tailwind": "base-surfaceMuted", "usage": "Input backgrounds, hover states, table headers" },
+        "borderSubtle": { "hex": "#E3E4EA", "tailwind": "base-borderSubtle", "usage": "Subtle borders" },
+        "divider": { "hex": "#ECEDEF", "tailwind": "base-divider", "usage": "Table row dividers, section separators" }
+      },
+      "status": {
+        "description": "Status colors for system feedback",
+        "success": { "hex": "#22A45D", "tailwind": "status-success", "usage": "Success messages" },
+        "warning": { "hex": "#F6A723", "tailwind": "status-warning", "usage": "Warning messages" },
+        "danger": { "hex": "#E5495E", "tailwind": "status-danger", "usage": "Error messages, negative trends" },
+        "info": { "hex": "#3B82F6", "tailwind": "status-info", "usage": "Info messages" }
+      },
+      "tags": {
+        "description": "Tag-specific colors for status indicators",
+        "availableBg": { "hex": "#E6F8EE", "tailwind": "tags-availableBg", "usage": "Active/available tag background" },
+        "availableText": { "hex": "#1B9150", "tailwind": "tags-availableText", "usage": "Active/available tag text" },
+        "outOfStockBg": { "hex": "#FDE7EC", "tailwind": "tags-outOfStockBg", "usage": "Inactive/out of stock tag background" },
+        "outOfStockText": { "hex": "#D13C60", "tailwind": "tags-outOfStockText", "usage": "Inactive/out of stock tag text" }
+      }
+    },
+
+    "typography": {
+      "description": "Typography scale with exact Tailwind classes. Use 'text-h1', 'text-body', etc.",
+      "fontFamily": {
+        "value": "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        "tailwind": "font-sans (default)",
+        "usage": "Applied globally via globals.css"
+      },
+      "weights": {
+        "regular": { "value": 400, "tailwind": "font-normal" },
+        "medium": { "value": 500, "tailwind": "font-medium" },
+        "semibold": { "value": 600, "tailwind": "font-semibold" },
+        "bold": { "value": 700, "tailwind": "font-bold" }
+      },
+      "scale": {
+        "h1": {
+          "fontSize": "26px",
+          "lineHeight": "32px",
+          "letterSpacing": "-0.4px",
+          "weight": "semibold",
+          "tailwind": "text-h1",
+          "usage": "Page titles, main headings"
+        },
+        "h2": {
+          "fontSize": "20px",
+          "lineHeight": "26px",
+          "letterSpacing": "-0.2px",
+          "weight": "semibold",
+          "tailwind": "text-h2",
+          "usage": "Section headings"
+        },
+        "h3": {
+          "fontSize": "18px",
+          "lineHeight": "24px",
+          "weight": "semibold",
+          "tailwind": "text-h3",
+          "usage": "Card titles, sidebar brand name"
+        },
+        "subtitle": {
+          "fontSize": "14px",
+          "lineHeight": "20px",
+          "weight": "medium",
+          "tailwind": "text-subtitle",
+          "usage": "Card headers, widget titles, user names"
+        },
+        "body": {
+          "fontSize": "13px",
+          "lineHeight": "18px",
+          "weight": "regular",
+          "tailwind": "text-body",
+          "usage": "Body text, nav items, table content, input text"
+        },
+        "label": {
+          "fontSize": "12px",
+          "lineHeight": "16px",
+          "weight": "medium",
+          "tailwind": "text-label",
+          "usage": "Button text, form labels"
+        },
+        "caption": {
+          "fontSize": "11px",
+          "lineHeight": "14px",
+          "weight": "regular",
+          "tailwind": "text-caption",
+          "usage": "Meta text, KPI labels, table headers, chart labels, descriptions"
+        },
+        "dataLarge": {
+          "fontSize": "24px",
+          "lineHeight": "30px",
+          "letterSpacing": "-0.4px",
+          "weight": "bold",
+          "tailwind": "text-dataLarge",
+          "usage": "KPI values, large numbers, chart center values"
+        }
+      }
+    },
+
+    "spacing": {
+      "description": "8px base scale with 4px fine-tuning. Use Tailwind spacing classes.",
+      "scale": {
+        "xxs": { "value": "2px", "tailwind": "xxs", "usage": "Tiny gaps, notification dots" },
+        "xs": { "value": "4px", "tailwind": "xs", "usage": "Tight spacing, icon gaps" },
+        "sm": { "value": "8px", "tailwind": "sm", "usage": "Small gaps, compact spacing" },
+        "md": { "value": "12px", "tailwind": "md", "usage": "Medium gaps, card body padding" },
+        "lg": { "value": "16px", "tailwind": "lg", "usage": "Standard gaps, card padding" },
+        "xl": { "value": "24px", "tailwind": "xl", "usage": "Large gaps, section spacing" },
+        "xxl": { "value": "32px", "tailwind": "xxl", "usage": "Extra large gaps" },
+        "sectionGap": { "value": "40px", "tailwind": "sectionGap", "usage": "Major section separation" }
+      },
+      "commonPatterns": {
+        "cardPadding": "p-4 (16px)",
+        "cardHeaderGap": "mb-4 (16px)",
+        "sectionSpacing": "mb-6 (24px)",
+        "gridGap": "gap-4 (16px)",
+        "navItemGap": "gap-2.5 (10px)",
+        "iconButtonSize": "w-9 h-9 (36px)"
+      }
+    },
+
+    "borderRadius": {
+      "description": "Very rounded, pill-like shapes. Corners rarely sharp.",
+      "scale": {
+        "xs": { "value": "4px", "tailwind": "rounded-xs" },
+        "sm": { "value": "8px", "tailwind": "rounded-sm" },
+        "md": { "value": "12px", "tailwind": "rounded-md" },
+        "lg": { "value": "18px", "tailwind": "rounded-lg", "usage": "KPI cards" },
+        "xl": { "value": "24px", "tailwind": "rounded-xl", "usage": "Charts, tables, widgets, sidebar" },
+        "pill": { "value": "999px", "tailwind": "rounded-full", "usage": "Buttons, nav items, pills, search inputs, top bar" },
+        "container": { "value": "28px", "tailwind": "rounded-[28px]", "usage": "Outer app container" }
+      }
+    },
+
+    "shadows": {
+      "description": "Soft, diffused shadows for gentle depth. No harsh outlines.",
+      "soft": {
+        "value": "0 4px 10px rgba(15, 23, 42, 0.06)",
+        "tailwind": "shadow-soft",
+        "usage": "Cards, sidebar, top bar, standard elevation"
+      },
+      "soft-elevated": {
+        "value": "0 12px 35px rgba(15, 23, 42, 0.08)",
+        "tailwind": "shadow-soft-elevated",
+        "usage": "Outer container, prominent cards"
+      },
+      "inner": {
+        "value": "inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+        "tailwind": "shadow-inner",
+        "usage": "Inner depth (rarely used)"
+      }
+    },
+
+    "layout": {
+      "grid": {
+        "description": "12-column fluid grid with generous gutters",
+        "columns": 12,
+        "gutter": 24,
+        "maxWidth": 1440,
+        "tailwind": "max-w-container",
+        "pagePaddingX": 32,
+        "pagePaddingY": 24
+      },
+      "appShell": {
+        "description": "Persistent left sidebar + top bar + scrollable content area",
+        "outerBackground": "bg-base-background",
+        "outerPadding": "p-6",
+        "innerContainer": {
+          "background": "bg-base-surface",
+          "borderRadius": "rounded-[28px]",
+          "padding": "p-4",
+          "shadow": "shadow-soft-elevated"
+        },
+        "sidebarWidth": "w-[260px]",
+        "contentGap": "gap-4"
+      }
+    }
+  },
+
+  "components": {
+    "AppShell": {
+      "description": "Root structure with outer background, inner container, sidebar, and main content",
+      "structure": {
+        "outer": "min-h-screen bg-base-background p-6",
+        "container": "max-w-container mx-auto",
+        "inner": "bg-base-surface rounded-[28px] shadow-soft-elevated p-4",
+        "layout": "flex gap-4"
+      },
+      "example": "<div className=\"min-h-screen bg-base-background p-6\">\n  <div className=\"max-w-container mx-auto\">\n    <div className=\"bg-base-surface rounded-[28px] shadow-soft-elevated p-4\">\n      <div className=\"flex gap-4\">\n        <Sidebar />\n        <MainContent />\n      </div>\n    </div>\n  </div>\n</div>"
+    },
+
+    "Sidebar": {
+      "description": "Left navigation rail with brand, nav items, and bottom actions",
+      "container": {
+        "classes": "w-[260px] bg-base-surface rounded-xl shadow-soft p-5 flex flex-col",
+        "breakdown": "w-[260px] (fixed width), bg-base-surface (white), rounded-xl (24px), shadow-soft, p-5 (20px), flex flex-col"
+      },
+      "brand": {
+        "container": "mb-8",
+        "logoContainer": "flex items-center gap-3 mb-2",
+        "logoIcon": "w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center text-2xl",
+        "textContainer": "flex-1",
+        "title": "text-h3 text-neutral-900",
+        "subtitle": "text-caption text-neutral-500"
+      },
+      "navigation": {
+        "container": "flex-1 space-y-1",
+        "navItem": {
+          "base": "w-full h-8 px-3 rounded-full flex items-center gap-2.5 text-body transition-colors",
+          "default": "text-neutral-600 hover:bg-base-surfaceMuted",
+          "active": "bg-primary-50 text-primary-500",
+          "icon": "text-base (16px emoji/icon size)",
+          "label": "text-body"
+        }
+      },
+      "bottomActions": {
+        "container": "mt-auto pt-4 border-t border-base-divider",
+        "button": "w-full h-8 px-3 rounded-full flex items-center gap-2.5 text-body text-neutral-600 hover:bg-base-surfaceMuted"
+      },
+      "example": "<aside className=\"w-[260px] bg-base-surface rounded-xl shadow-soft p-5 flex flex-col\">\n  <div className=\"mb-8\">\n    <div className=\"flex items-center gap-3 mb-2\">\n      <div className=\"w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center text-2xl\">🎨</div>\n      <div>\n        <h3 className=\"text-h3 text-neutral-900\">CreatorHub</h3>\n        <p className=\"text-caption text-neutral-500\">Analytics</p>\n      </div>\n    </div>\n  </div>\n  <nav className=\"flex-1 space-y-1\">\n    <button className=\"w-full h-8 px-3 rounded-full flex items-center gap-2.5 text-body bg-primary-50 text-primary-500\">\n      <span className=\"text-base\">📊</span>\n      <span>Dashboard</span>\n    </button>\n  </nav>\n</aside>"
+    },
+
+    "TopBar": {
+      "description": "Floating top bar with search, summary pills, and user actions",
+      "container": {
+        "classes": "w-full bg-base-surface rounded-full shadow-soft py-2.5 px-[18px] flex items-center gap-4",
+        "breakdown": "w-full, bg-base-surface, rounded-full (pill), shadow-soft, py-2.5 (10px), px-[18px], flex items-center gap-4"
+      },
+      "search": {
+        "container": "flex-1",
+        "inputContainer": "relative max-w-md",
+        "icon": "absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400",
+        "input": "w-full h-10 pl-10 pr-4 bg-base-surfaceMuted rounded-full text-body text-neutral-700 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-200"
+      },
+      "summaryPills": {
+        "container": "flex items-center gap-3",
+        "pill": "bg-base-surface rounded-full px-4 py-2 flex items-center gap-1.5",
+        "indicator": "w-2 h-2 rounded-full bg-primary-500 (or bg-secondary-500)",
+        "text": "text-body text-neutral-700"
+      },
+      "actions": {
+        "container": "flex items-center gap-2",
+        "iconButton": "w-9 h-9 rounded-full bg-base-surfaceMuted flex items-center justify-center text-neutral-600 hover:bg-base-surface transition-colors relative",
+        "icon": "text-base",
+        "notificationDot": "absolute top-1 right-1 w-2 h-2 bg-primary-500 rounded-full",
+        "avatar": "w-9 h-9 rounded-full bg-primary-100 flex items-center justify-center",
+        "userName": "text-subtitle text-neutral-700 ml-2"
+      },
+      "example": "<header className=\"w-full bg-base-surface rounded-full shadow-soft py-2.5 px-[18px] flex items-center gap-4\">\n  <div className=\"flex-1\">\n    <div className=\"relative max-w-md\">\n      <div className=\"absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400\">🔍</div>\n      <input className=\"w-full h-10 pl-10 pr-4 bg-base-surfaceMuted rounded-full text-body text-neutral-700 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-200\" />\n    </div>\n  </div>\n</header>"
+    },
+
+    "KPIStat": {
+      "description": "KPI card displaying title, large value, and optional trend",
+      "container": {
+        "classes": "bg-base-surface rounded-lg shadow-soft p-4",
+        "breakdown": "bg-base-surface, rounded-lg (18px), shadow-soft, p-4"
+      },
+      "layout": "flex flex-col",
+      "title": {
+        "classes": "text-caption text-neutral-500 mb-1",
+        "usage": "KPI label (e.g., 'Total Revenue')"
+      },
+      "value": {
+        "classes": "text-dataLarge text-neutral-900 mb-1",
+        "usage": "Main KPI number (e.g., '$24,580')"
+      },
+      "trend": {
+        "classes": "text-caption",
+        "positive": "text-secondary-500",
+        "negative": "text-status-danger",
+        "format": "↑ {value} or ↓ {value}"
+      },
+      "example": "<div className=\"bg-base-surface rounded-lg shadow-soft p-4\">\n  <div className=\"flex flex-col\">\n    <span className=\"text-caption text-neutral-500 mb-1\">Total Revenue</span>\n    <span className=\"text-dataLarge text-neutral-900 mb-1\">$24,580</span>\n    <span className=\"text-caption text-secondary-500\">↑ +12.5%</span>\n  </div>\n</div>"
+    },
+
+    "ChartLine": {
+      "description": "Line chart component with legend and tooltip",
+      "container": {
+        "classes": "bg-base-surface rounded-xl shadow-soft p-4",
+        "breakdown": "bg-base-surface, rounded-xl (24px), shadow-soft, p-4"
+      },
+      "header": {
+        "container": "flex items-center justify-between mb-4",
+        "title": "text-subtitle text-neutral-800",
+        "meta": "text-caption text-neutral-500"
+      },
+      "legend": {
+        "container": "flex items-center gap-4",
+        "item": "flex items-center gap-1.5",
+        "dot": "w-2 h-2 rounded-full bg-primary-500 (or bg-secondary-500)",
+        "label": "text-caption text-neutral-500"
+      },
+      "chart": {
+        "container": "ResponsiveContainer width=\"100%\" height={250}",
+        "gridColor": "#ECEDEF (base-divider)",
+        "axisColor": "#9A9AAA (neutral-400)",
+        "axisFontSize": 11,
+        "primaryLine": {
+          "color": "#E9557B (primary-500)",
+          "strokeWidth": 2.5,
+          "dotRadius": 4,
+          "activeDotRadius": 6
+        },
+        "secondaryLine": {
+          "color": "#22A45D (secondary-500)",
+          "strokeWidth": 2.5,
+          "dotRadius": 4,
+          "activeDotRadius": 6
+        }
+      },
+      "tooltip": {
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": "12px",
+        "boxShadow": "0 4px 10px rgba(15, 23, 42, 0.06)",
+        "fontSize": "11px"
+      }
+    },
+
+    "ChartDonut": {
+      "description": "Donut chart with center label and legend",
+      "container": {
+        "classes": "bg-base-surface rounded-xl shadow-soft p-4",
+        "breakdown": "bg-base-surface, rounded-xl (24px), shadow-soft, p-4"
+      },
+      "header": {
+        "title": "text-subtitle text-neutral-800",
+        "meta": "text-caption text-neutral-500 mb-4"
+      },
+      "chart": {
+        "container": "relative",
+        "responsiveContainer": "width=\"100%\" height={200}",
+        "innerRadius": 60,
+        "outerRadius": 80,
+        "paddingAngle": 2,
+        "colors": ["#E9557B", "#22A45D", "#F6A723", "#3B82F6"]
+      },
+      "centerLabel": {
+        "container": "absolute inset-0 flex items-center justify-center",
+        "inner": "text-center",
+        "label": "text-caption text-neutral-500",
+        "value": "text-dataLarge text-neutral-900"
+      },
+      "legend": {
+        "container": "flex flex-wrap gap-3 justify-center mt-4",
+        "item": "flex items-center gap-1.5",
+        "dot": "w-2 h-2 rounded-full",
+        "label": "text-caption text-neutral-500"
+      }
+    },
+
+    "DataTable": {
+      "description": "Data table with header, rows, and status tags",
+      "container": {
+        "classes": "bg-base-surface rounded-xl shadow-soft p-4",
+        "breakdown": "bg-base-surface, rounded-xl (24px), shadow-soft, p-4"
+      },
+      "header": {
+        "title": "text-subtitle text-neutral-800",
+        "meta": "text-caption text-neutral-500 mb-4"
+      },
+      "table": {
+        "container": "overflow-x-auto",
+        "table": "w-full",
+        "thead": "bg-base-surfaceMuted",
+        "th": "text-left py-2 px-4 text-caption text-neutral-500 font-medium",
+        "thRight": "text-right py-2 px-4 text-caption text-neutral-500 font-medium",
+        "thCenter": "text-center py-2 px-4 text-caption text-neutral-500 font-medium",
+        "tbody": "",
+        "tr": "border-b border-base-divider hover:bg-base-surfaceMuted transition-colors",
+        "td": "py-2 px-4 text-body text-neutral-700",
+        "tdRight": "py-2 px-4 text-body text-neutral-700 text-right"
+      },
+      "statusTag": {
+        "base": "inline-flex items-center h-6 px-2.5 rounded-full text-caption",
+        "active": "bg-tags-availableBg text-tags-availableText",
+        "inactive": "bg-tags-outOfStockBg text-tags-outOfStockText"
+      },
+      "example": "<table className=\"w-full\">\n  <thead>\n    <tr className=\"bg-base-surfaceMuted\">\n      <th className=\"text-left py-2 px-4 text-caption text-neutral-500 font-medium\">Content</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr className=\"border-b border-base-divider hover:bg-base-surfaceMuted transition-colors\">\n      <td className=\"py-2 px-4 text-body text-neutral-700\">Content Name</td>\n    </tr>\n  </tbody>\n</table>"
+    },
+
+    "InfoWidget": {
+      "description": "Small info card with icon, title, description, and optional CTA button",
+      "container": {
+        "classes": "bg-base-surface rounded-xl shadow-soft p-4 flex flex-col gap-3",
+        "breakdown": "bg-base-surface, rounded-xl (24px), shadow-soft, p-4, flex flex-col gap-3"
+      },
+      "header": {
+        "container": "flex items-center gap-3",
+        "iconContainer": "w-8 h-8 rounded-full bg-base-surfaceMuted flex items-center justify-center",
+        "icon": "text-base",
+        "textContainer": "flex-1",
+        "title": "text-subtitle text-neutral-800",
+        "description": "text-caption text-neutral-500"
+      },
+      "cta": {
+        "base": "h-9 px-5 rounded-full text-label font-medium transition-colors",
+        "primary": "bg-primary-500 text-white hover:bg-primary-600 shadow-soft",
+        "purple": "bg-tertiary-500 text-white hover:bg-tertiary-400"
+      },
+      "example": "<div className=\"bg-base-surface rounded-xl shadow-soft p-4 flex flex-col gap-3\">\n  <div className=\"flex items-center gap-3\">\n    <div className=\"w-8 h-8 rounded-full bg-base-surfaceMuted flex items-center justify-center\">\n      <span className=\"text-base\">✅</span>\n    </div>\n    <div className=\"flex-1\">\n      <h4 className=\"text-subtitle text-neutral-800\">Verification</h4>\n      <p className=\"text-caption text-neutral-500\">Verify your account</p>\n    </div>\n  </div>\n  <button className=\"h-9 px-5 rounded-full text-label font-medium bg-primary-500 text-white hover:bg-primary-600 shadow-soft\">\n    Verify Now\n  </button>\n</div>"
+    },
+
+    "Button": {
+      "description": "Rounded pill buttons with various variants",
+      "sizes": {
+        "sm": {
+          "classes": "h-7 px-3.5 text-label",
+          "usage": "Small actions"
+        },
+        "md": {
+          "classes": "h-9 px-5 text-label font-medium",
+          "usage": "Standard buttons (most common)"
+        },
+        "lg": {
+          "classes": "h-11 px-6 text-subtitle",
+          "usage": "Primary CTAs"
+        }
+      },
+      "variants": {
+        "primary": {
+          "classes": "bg-primary-500 text-white hover:bg-primary-600 shadow-soft rounded-full transition-colors",
+          "usage": "Primary actions, main CTAs"
+        },
+        "secondary": {
+          "classes": "bg-base-surfaceMuted text-neutral-700 hover:bg-base-surface rounded-full transition-colors",
+          "usage": "Secondary actions"
+        },
+        "purple": {
+          "classes": "bg-tertiary-500 text-white hover:bg-tertiary-400 rounded-full transition-colors",
+          "usage": "Premium/upgrade actions"
+        },
+        "ghost": {
+          "classes": "bg-transparent border border-base-borderSubtle text-neutral-700 hover:bg-base-surfaceMuted rounded-full transition-colors",
+          "usage": "Tertiary actions"
+        }
+      },
+      "withIcon": {
+        "container": "flex items-center gap-1.5",
+        "iconSize": "text-base (16px)"
+      }
+    },
+
+    "Tag": {
+      "description": "Status chips for tables and lists",
+      "base": "inline-flex items-center h-6 px-2.5 rounded-full text-caption",
+      "variants": {
+        "active": "bg-tags-availableBg text-tags-availableText",
+        "inactive": "bg-tags-outOfStockBg text-tags-outOfStockText",
+        "neutral": "bg-base-surfaceMuted text-neutral-600"
+      },
+      "example": "<span className=\"inline-flex items-center h-6 px-2.5 rounded-full text-caption bg-tags-availableBg text-tags-availableText\">\n  Active\n</span>"
+    },
+
+    "PageHeader": {
+      "description": "Standard page header with title and description",
+      "container": "mb-6",
+      "title": "text-h1 text-neutral-900 mb-1",
+      "description": "text-body text-neutral-500",
+      "example": "<div className=\"mb-6\">\n  <h1 className=\"text-h1 text-neutral-900 mb-1\">Creator Analytics</h1>\n  <p className=\"text-body text-neutral-500\">Track your performance and grow your audience</p>\n</div>"
+    },
+
+    "Grid": {
+      "description": "Common grid layouts",
+      "kpiGrid": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6",
+      "chartGrid": "grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6",
+      "widgetGrid": "grid grid-cols-1 md:grid-cols-3 gap-4"
+    }
+  },
+
+  "designPrinciples": {
+    "visualHierarchy": [
+      "Let primary data (KPI numbers, charts) be the darkest elements on screen (neutral-900)",
+      "Use color accents only for actions, states, and chart data—not for decoration",
+      "Reserve strong pink (primary-500) for CTAs, key stats, and active states",
+      "Use neutral-500 for meta text, captions, and secondary information"
+    ],
+    "densityAndWhitespace": [
+      "Cards are compact but never crowded; maintain at least 16px (p-4) inner padding",
+      "Sections should have clear vertical separation (24px/mb-6) to avoid merging",
+      "Use whitespace to group related elements instead of heavy borders",
+      "Grid gaps should be 16px (gap-4) for consistency"
+    ],
+    "consistency": [
+      "Use rounded-full (pill) for any interactive element (buttons, nav items, tags, search inputs)",
+      "Apply the same border radius tier within a context (e.g., all dashboard cards use rounded-xl)",
+      "Maintain consistent icon sizes: text-base (16px) for most icons, w-9 h-9 (36px) for icon buttons",
+      "All cards use shadow-soft, outer container uses shadow-soft-elevated"
+    ],
+    "colorUsage": [
+      "Primary (pink): Active states, primary buttons, chart lines, notification dots",
+      "Secondary (green): Success states, positive trends, chart lines",
+      "Tertiary (purple): Premium/upgrade actions only",
+      "Neutral: All text and structural elements",
+      "Status colors: System feedback only (success, warning, danger, info)"
+    ],
+    "typographyUsage": [
+      "h1: Page titles only",
+      "h2: Section headings (rarely used)",
+      "h3: Card titles, sidebar brand",
+      "subtitle: Widget titles, user names, card headers",
+      "body: All body text, nav items, table content",
+      "label: Button text, form labels",
+      "caption: Meta text, KPI labels, table headers, descriptions",
+      "dataLarge: KPI values, large numbers"
+    ],
+    "interaction": [
+      "All interactive surfaces should show hover state via bg-base-surfaceMuted or color change",
+      "Click targets should be at least 32px high (h-8 minimum)",
+      "Use transition-colors for smooth hover effects",
+      "Buttons should have clear hover states (darker background or shadow change)"
+    ],
+    "accessibility": [
+      "Ensure text on colored backgrounds has sufficient contrast (WCAG AA minimum)",
+      "Use shape + color for status (e.g., pill tags with color and label text)",
+      "Keep font sizes 11px (caption) and above for any interactive or critical text",
+      "Provide focus states for keyboard navigation (focus:ring-2 focus:ring-primary-200)"
+    ],
+    "brandFeel": [
+      "Always prefer soft, friendly shapes over sharp edges",
+      "Avoid heavy outlines—depth comes from shadow and layering",
+      "Colors must feel pastel and calm rather than saturated and neon",
+      "Use rounded corners generously (xl for cards, full for interactive elements)"
+    ]
+  },
+
+  "commonPatterns": {
+    "card": {
+      "description": "Standard card container used throughout the app",
+      "classes": "bg-base-surface rounded-xl shadow-soft p-4",
+      "withHeader": {
+        "header": "mb-4",
+        "title": "text-subtitle text-neutral-800",
+        "meta": "text-caption text-neutral-500"
+      }
+    },
+    "section": {
+      "description": "Content section with spacing",
+      "classes": "mb-6",
+      "usage": "Separate major content blocks"
+    },
+    "iconButton": {
+      "description": "Circular icon button",
+      "classes": "w-9 h-9 rounded-full bg-base-surfaceMuted flex items-center justify-center text-neutral-600 hover:bg-base-surface transition-colors",
+      "withNotification": "Add relative class and notification dot: absolute top-1 right-1 w-2 h-2 bg-primary-500 rounded-full"
+    },
+    "statusIndicator": {
+      "description": "Small colored dot for status",
+      "classes": "w-2 h-2 rounded-full",
+      "primary": "bg-primary-500",
+      "secondary": "bg-secondary-500"
+    },
+    "divider": {
+      "description": "Section divider",
+      "classes": "border-t border-base-divider",
+      "usage": "Separate sections within containers"
+    }
+  },
+
+  "tailwindMapping": {
+    "description": "Quick reference for Tailwind class usage",
+    "colors": {
+      "primary": "primary-{50-600}",
+      "secondary": "secondary-{50-600}",
+      "tertiary": "tertiary-{50-500}",
+      "neutral": "neutral-{100-900}",
+      "base": "base-{background|surface|surfaceMuted|borderSubtle|divider}",
+      "status": "status-{success|warning|danger|info}",
+      "tags": "tags-{availableBg|availableText|outOfStockBg|outOfStockText}"
+    },
+    "typography": {
+      "headings": "text-h1 | text-h2 | text-h3",
+      "body": "text-subtitle | text-body | text-label | text-caption | text-dataLarge"
+    },
+    "spacing": {
+      "padding": "p-{xs|sm|md|lg|xl|xxl|4|6}",
+      "margin": "m-{xs|sm|md|lg|xl|xxl|4|6}",
+      "gap": "gap-{xs|sm|md|lg|xl|xxl|1|2|3|4}"
+    },
+    "borderRadius": {
+      "small": "rounded-xs | rounded-sm | rounded-md",
+      "medium": "rounded-lg | rounded-xl",
+      "full": "rounded-full",
+      "custom": "rounded-[28px]"
+    },
+    "shadows": {
+      "soft": "shadow-soft",
+      "elevated": "shadow-soft-elevated",
+      "inner": "shadow-inner"
+    }
+  },
+
+  "implementationGuidelines": {
+    "componentStructure": [
+      "Always use 'use client' directive for interactive components",
+      "Use TypeScript interfaces for props",
+      "Follow the exact Tailwind classes specified in this document",
+      "Maintain consistent spacing using the spacing scale"
+    ],
+    "stylingRules": [
+      "Never use inline styles except for dynamic values (e.g., chart colors from data)",
+      "Always use Tailwind utility classes",
+      "Use semantic color names (primary-500, not hex codes)",
+      "Follow the border radius hierarchy: full for interactive, xl for cards, lg for small cards"
+    ],
+    "responsiveDesign": [
+      "Use Tailwind responsive prefixes (md:, lg:) for breakpoints",
+      "Grid layouts should stack on mobile (grid-cols-1) and expand on larger screens",
+      "Maintain touch targets of at least 32px on mobile",
+      "Sidebar can be hidden/collapsed on mobile if needed"
+    ],
+    "accessibility": [
+      "Include proper ARIA labels for icon-only buttons",
+      "Ensure keyboard navigation works for all interactive elements",
+      "Maintain color contrast ratios",
+      "Use semantic HTML elements (button, nav, aside, etc.)"
+    ],
+    "performance": [
+      "Use React.memo for expensive components if needed",
+      "Lazy load charts and heavy components",
+      "Optimize images and icons",
+      "Use CSS transitions instead of JavaScript animations where possible"
+    ]
+  },
+
+  "examples": {
+    "newFeature": {
+      "description": "When building a new feature, follow this structure",
+      "steps": [
+        "1. Create component file in frontend/src/components/creator-analytics/",
+        "2. Use 'use client' directive",
+        "3. Define TypeScript interface for props",
+        "4. Apply card styling: bg-base-surface rounded-xl shadow-soft p-4",
+        "5. Use appropriate typography scale (subtitle for titles, body for content)",
+        "6. Follow spacing patterns (mb-4 for headers, gap-4 for grids)",
+        "7. Use semantic colors from the palette",
+        "8. Add hover states for interactive elements",
+        "9. Ensure responsive design with Tailwind breakpoints"
+      ]
+    },
+    "newPage": {
+      "description": "When creating a new page",
+      "structure": {
+        "outer": "min-h-screen bg-base-background p-6",
+        "container": "max-w-container mx-auto",
+        "inner": "bg-base-surface rounded-[28px] shadow-soft-elevated p-4",
+        "layout": "flex gap-4",
+        "sidebar": "<Sidebar />",
+        "content": "flex-1 flex flex-col",
+        "topBar": "<TopBar /> (mb-4)",
+        "scrollableContent": "flex-1 overflow-y-auto pr-2"
+      }
+    }
+  }
+}
+

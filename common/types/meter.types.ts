@@ -1,3 +1,4 @@
+// Legacy enum - kept for backward compatibility during migration
 export enum MeterType {
   WATER = 'WATER',
   ELECTRIC = 'ELECTRIC',
@@ -8,6 +9,24 @@ export enum ReadingFrequency {
   WEEKLY = 'WEEKLY',
   MONTHLY = 'MONTHLY',
   AD_HOC = 'AD_HOC',
+}
+
+export interface MeterTypeModel {
+  id: string;
+  name: string;
+  description?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateMeterTypeRequest {
+  name: string;
+  description?: string;
+}
+
+export interface UpdateMeterTypeRequest {
+  name?: string;
+  description?: string;
 }
 
 export interface Location {
@@ -31,7 +50,8 @@ export interface UpdateLocationRequest {
 export interface Meter {
   id: string;
   meterNumber: string;
-  meterType: MeterType;
+  meterTypeId: string;
+  meterType?: MeterTypeModel;
   locationId: string;
   frequency: ReadingFrequency;
   location?: Location;
@@ -41,14 +61,14 @@ export interface Meter {
 
 export interface CreateMeterRequest {
   meterNumber: string;
-  meterType: MeterType;
+  meterTypeId: string;
   locationId: string;
   frequency: ReadingFrequency;
 }
 
 export interface UpdateMeterRequest {
   meterNumber?: string;
-  meterType?: MeterType;
+  meterTypeId?: string;
   locationId?: string;
   frequency?: ReadingFrequency;
 }

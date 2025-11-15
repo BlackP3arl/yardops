@@ -45,17 +45,34 @@ export const updateLocationSchema = z.object({
   description: z.string().optional(),
 });
 
+// Meter Type schemas
+export const createMeterTypeSchema = z.object({
+  name: z.string().min(1, 'Meter type name is required'),
+  description: z.preprocess(
+    (val) => (val === '' || val === null ? undefined : val),
+    z.string().optional()
+  ),
+});
+
+export const updateMeterTypeSchema = z.object({
+  name: z.string().min(1, 'Meter type name is required').optional(),
+  description: z.preprocess(
+    (val) => (val === '' || val === null ? undefined : val),
+    z.string().optional()
+  ),
+});
+
 // Meter schemas
 export const createMeterSchema = z.object({
   meterNumber: z.string().min(1, 'Meter number is required'),
-  meterType: z.enum(['WATER', 'ELECTRIC']),
+  meterTypeId: z.string().uuid('Invalid meter type ID'),
   locationId: z.string().uuid('Invalid location ID'),
   frequency: z.enum(['DAILY', 'WEEKLY', 'MONTHLY', 'AD_HOC']),
 });
 
 export const updateMeterSchema = z.object({
   meterNumber: z.string().min(1, 'Meter number is required').optional(),
-  meterType: z.enum(['WATER', 'ELECTRIC']).optional(),
+  meterTypeId: z.string().uuid('Invalid meter type ID').optional(),
   locationId: z.string().uuid('Invalid location ID').optional(),
   frequency: z.enum(['DAILY', 'WEEKLY', 'MONTHLY', 'AD_HOC']).optional(),
 });
@@ -99,7 +116,7 @@ export const createNotificationSchema = z.object({
 export const reportFilterSchema = z.object({
   locationId: z.string().uuid().optional(),
   readerId: z.string().uuid().optional(),
-  meterType: z.enum(['WATER', 'ELECTRIC']).optional(),
+  meterTypeId: z.string().uuid().optional(),
   frequency: z.enum(['DAILY', 'WEEKLY', 'MONTHLY', 'AD_HOC']).optional(),
   startDate: z.string().datetime().optional(),
   endDate: z.string().datetime().optional(),
